@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do</title>
+    <link rel="stylesheet" href="style_feedback.css">
+</head>
+<body>
+    <h1>Classe</h1>
+    <pre>
+    class Animal
+        patas = 4
+    
+        def initialize(idade, cor)
+            @idade = idade
+            @cor = cor
+        end
+        attr_accessor :idade, :cor
+    
+    
+        def andar()
+            puts cor
+        end
+    
+    end
+    
+    class Cachorro < Animal
+        def initialize(idade, cor, tamanho_rabo)
+            @idade = idade
+            @cor = cor
+            @tamanho_rabo = tamanho_rabo
+        end
+    
+        def comer_osso
+            puts "comendo osso"
+        end
+    end
+    
+    class Pessoa  < Animal
+        def initialize(idade, cor, tatuagens)
+            @idade = idade
+            @cor = cor
+            @tatuagens = tatuagens
+        end
+       
+        def passeio(cachorro)
+            print "passeando com cahorro de cor: ", cachorro.cor
+        end
+    end
+    
+    cachorro =  Cachorro.new(8, "laranja", 12)
+    gato = Animal.new(4, "azul")
+    pessoa = Pessoa.new(29, "verde", 2)
+    cachorro.andar()
+    pessoa.passeio(cachorro)
+    </pre>
+</body>
+</html>

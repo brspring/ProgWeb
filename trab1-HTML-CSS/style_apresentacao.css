@@ -1,0 +1,20 @@
+body{
+    background-color:#3d3553;
+}
+h1{
+    text-align: center;
+
+    color: white;
+}
+section{
+    text-align: center;
+}
+img{
+    width: 200px;
+    height: 400px;
+    border: 5ps solid black;
+}
+d1 dd{
+    text-align: center;
+    color: white;
+}

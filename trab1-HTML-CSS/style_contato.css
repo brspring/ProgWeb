@@ -1,11 +1,37 @@
-body{
-    background-color: #5e42a6;
+body {
+    background-color: #8a8a8a;
 }
 
-h1{
+h1 {
     text-align: center;
     color: white;
+    font-size: 3.0em;
+    margin-bottom: 70px;
 }
-section{
+
+section {
     text-align: center;
+}
+
+section a {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+main section a img {
+    width: 100px;
+    height: 100px;
+    margin-top: 50px;
+    margin: 40px
+}
+
+main section a p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #fff0f0;
+    text-decoration: none;
+    margin:0px;
 }

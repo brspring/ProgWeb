@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 
 html {
   font-family: Arial;
-  font-size: 16px;
-  background: #5e42a6;
+  font-size: 1.1em;
+  background: #8a8a8a;
 }
 
 @media (min-width: 768px) {
@@ -12,15 +12,16 @@ html {
     left: 0;
     top: 0;
     height: 100vh;
-    background: #312450;
+    background: #2c2c2c;
     font-size: 1.5em;
     margin: 0;
     padding: 0;
     position: fixed;
   }
+
   .main {
     width: 83%;
-    background: #5e42a6;
+    background: #8a8a8a;
     position: fixed;
     top: 0;
     right: 0;
@@ -33,40 +34,40 @@ html {
     width: 100%;
     height: auto;
     position: static;
-    background: #312450;
+    background: #2c2c2c;
     font-size: 1.5em;
     margin: 0;
     padding: 0;
   }
+
   .main {
     width: 100%;
-    background: #5e42a6;
+    background: #8a8a8a;
     position: static;
   }
 }
 
 
 .sidebar ul {
-    position: relative;
-    text-align: left;
-    top: 30%;
-    font-weight: bold;
-    list-style-type: none;
+  margin-top: 80px;
+  text-align: left;
+  top: 30%;
+  font-weight: bold;
+  list-style-type: none;
 
 }
 
 .sidebar ul li {
-
   padding: 20px 0;
   margin: 20px;
 }
 
 .sidebar ul li a {
-  
+
   position: relative;
   display: block;
   padding: 18px 0;
-  font-size:1em;
+  font-size: 1em;
   font-family: 'open_sansregular';
   color: #fff0f0;
   text-decoration: none;
@@ -76,27 +77,57 @@ html {
 }
 
 .sidebar ul li a::after {
- 
+
   position: absolute;
   content: "";
   top: 100%;
   left: 0;
   width: 70%;
   height: 2px;
-  background: #65d8da;
+  background: #3be2ff;
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.5s;
 }
 
 .sidebar ul li a:hover {
-  color: #96aaac;
+  color: #aaaaaa;
 }
 
 .sidebar ul li a:hover::after {
-  
+
   transform: scaleX(1);
   transform-origin: left;
 
 }
 
+
+.imagem { 
+  display: block;
+  margin: 40px auto 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 80%; 
+}
+
+
+footer {
+  display: flex;
+  justify-content: center;
+}
+
+footer a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px;
+  margin-top: 150px;
+  text-align: center;
+  color: #fff0f0;
+  text-decoration: none;
+}
+
+footer a img {
+  width: 45px;
+  height: 45px;
+}

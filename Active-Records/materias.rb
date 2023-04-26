@@ -5,5 +5,5 @@ ActiveRecord::Base.establish_connection :adapter => "sqlite3",
 
 class Materias < ApplicationRecord::Base;
     belongs_to :departamento
-    has_many :alunos
+    has_and_belongs_to_many :alunos
 end                                                        

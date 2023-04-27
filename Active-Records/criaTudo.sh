@@ -1,10 +1,9 @@
 rm -f Tabelas.sqlite3
-ruby remove.rb
 
 ruby criaDepartamento.rb 
 echo "Ok"
 
-ruby criaAluno.rb
+ruby criaAlunos.rb
 echo "Ok"
 
 ruby criaMatricula.rb
@@ -17,7 +16,7 @@ ruby criaAlunoMateria.rb
 echo "OK"
 
 
-rcd Puby populaDepartamentos.rb
+ruby populaDepartamentos.rb
 echo "Ok"
 
 ruby populaAluno.rb

@@ -8,5 +8,5 @@ require 'matricula.rb'
 alunos = Aluno.all
 alunos.each do |p|
   print "#{p.nome} "
-  print "RG=#{p.matricula.cpf} GRR=#{p.documento.grr} "
+  print "RG=#{p.matricula.cpf} GRR=#{p.matricula.grr} "
 end

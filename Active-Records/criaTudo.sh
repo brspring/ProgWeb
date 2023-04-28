@@ -1,39 +1,38 @@
 rm -f Tabelas.sqlite3
 
-ruby criaDepartamento.rb 
+echo "Criando departamentos..."
+ruby criaDepartamento.rb
 echo "Ok"
 
+echo "Criando alunos..."
 ruby criaAlunos.rb
 echo "Ok"
 
+echo "Criando matriculas..."
 ruby criaMatricula.rb
 echo "Ok"
 
-ruby criaMaterias.rb 
+echo "Criando turmas..."
+ruby criaTurmas.rb
 echo "Ok"
 
-ruby criaAlunoMateria.rb
+echo "Criando alunos_turmas..."
+ruby criaAlunoTurmas.rb
 echo "OK"
 
-
+echo "Populando tabelas departamentos..."
 ruby populaDepartamentos.rb
 echo "Ok"
 
+echo "Populando tabela de alunos..."
 ruby populaAluno.rb
 echo "Ok"
 
-ruby populaMaterias.rb
+echo "Populando tabela de materias..."
+ruby populaTurmas.rb
 echo "Ok"
 
-ruby populaAlunoMateria.rb
+ echo "Populando tabela de aluno e materias..."
+ruby populaAlunoTurma.rb
 echo "Ok"
 
-
-ruby listaAlunos.rb
-echo "Ok"
-
-ruby listaAlunosmMaterias.rb
-echo "Ok"
-
-ruby listaDepartamentos.rb
-echo "Ok"

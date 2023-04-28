@@ -2,7 +2,7 @@
 
 $:.push './'
 require 'aluno.rb'
-require 'matricula.rb'
+require 'turma.rb'
 
 
 alunos = Aluno.all

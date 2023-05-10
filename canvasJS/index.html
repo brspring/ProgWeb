@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Linha com HTML5 e Canvas</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+
+    <script>
+      // Obter o elemento canvas
+      var canvas = document.getElementById("myCanvas");
+      var context = canvas.getContext("2d");
+
+      // Desenhar a linha
+      context.beginPath();
+      context.moveTo(50, 50); // coordenadas iniciais (x, y)
+      context.lineTo(350, 350); // coordenadas finais (x, y)
+      context.strokeStyle = "red"; // cor da linha
+      context.lineWidth = 3; // largura da linha
+      context.stroke(); // desenhar a linha
+    </script>
+  </body>
+</html>

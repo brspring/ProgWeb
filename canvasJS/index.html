@@ -2,17 +2,15 @@
 <html>
   <head>
     <title>Linha com HTML5 e Canvas</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="canvas.js"></script>
   </head>
   <body>
-    <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas> 
+    <canvas id="myCanvas" width="700" height="500" style="border:1px solid #000000;"></canvas> 
 
-    <script>
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    ctx.moveTo(0, 0);
-    ctx.lineTo(400, 400);
-    ctx.stroke();
-    </script> 
+    <button id="linhaBotao">Linha</button>
+    <button id="poligonoBotao">Polígono</button>
 
+    <script src="canvas.js"></script> 
   </body>
 </html>

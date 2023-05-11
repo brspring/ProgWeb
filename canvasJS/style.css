@@ -1,0 +1,22 @@
+#myCanvas {
+    border: 1px solid #000000;
+    position: fixed;
+    left: 30%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#linhaBotao {
+    position: fixed;
+    right: 40%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+
+} 
+
+#poligonoBotao {
+    position: fixed;
+    right: 30%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+}

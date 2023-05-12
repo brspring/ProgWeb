@@ -6,9 +6,9 @@
     transform: translate(-50%, -50%);
 }
 
-#linhaBotao {
+#RetaBotao {
     position: fixed;
-    right: 40%;
+    right: 30%;
     top: 70%;
     transform: translate(-50%, -50%);
 
@@ -16,7 +16,26 @@
 
 #poligonoBotao {
     position: fixed;
-    right: 30%;
+    right: 15%;
     top: 70%;
     transform: translate(-50%, -50%);
 }
+
+.meu-botao {
+    background-color: #1b1b1b;
+    border: none;
+    color: white; 
+    padding: 15px 32px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Sem sublinhado */
+    display: inline-block; /* Exibir como um bloco */
+    font-size: 16px; /* Tamanho da fonte */
+    margin: 4px 2px; /* Margem externa */
+    cursor: pointer; /* Cursor do mouse */
+    border-radius: 8px; 
+  }
+  
+  .meu-botao:hover {
+    background-color: #25004e; /* Cor de fundo ao passar o mouse */
+  }
+  

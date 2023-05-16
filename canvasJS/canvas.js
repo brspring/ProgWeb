@@ -21,17 +21,17 @@ function Reta() {
     },
 
     startPointX: function () {
-      return this.centerX();
+      return this.centerX() - this.width / 2;
     },
-
+    
     startPointY: function () {
       return this.centerY() - this.height / 2;
     },
-
+    
     endPointX: function () {
-      return this.centerX();
+      return this.centerX() + this.width / 2;
     },
-
+    
     endPointY: function () {
       return this.centerY() + this.height / 2;
     }
@@ -118,27 +118,21 @@ function Reta() {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
   
+    // Movendo o ponto final da reta
     if (
-      offsetX >= reta.startPointX() - 5 &&
-      offsetX <= reta.startPointX() + 5 &&
-      offsetY >= reta.startPointY() - 5 &&
-      offsetY <= reta.startPointY() + 5
-    ) {
-      // Movendo o ponto inicial da reta
-      reta.height += reta.startPointY() - offsetY;
-      reta.y += offsetY - reta.startPointY();
-    } else if (
       offsetX >= reta.endPointX() - 5 &&
       offsetX <= reta.endPointX() + 5 &&
       offsetY >= reta.endPointY() - 5 &&
       offsetY <= reta.endPointY() + 5
     ) {
-      // Movendo o ponto final da reta
+      reta.height = offsetY - reta.startPointY();
+    }else {
+      reta.width = offsetX - reta.startPointX();
       reta.height = offsetY - reta.startPointY();
     }
-  
     drawReta();
   }
+  
 
 // Adicionar evento de clique duplo ao canvas
 canvas.addEventListener("dblclick", function (event) {

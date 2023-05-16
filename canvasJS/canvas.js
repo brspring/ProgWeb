@@ -64,8 +64,6 @@ function Reta() {
     ctx.fill();
   }
 
-  drawReta(); // Desenhar a reta inicialmente
-
   // Adicionar evento de clique ao canvas
   canvas.addEventListener("mousedown", function (event) {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
@@ -118,42 +116,49 @@ function Reta() {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
   
-    // Movendo o ponto final da reta
-    if (
+    var startPointClicked =
+      offsetX >= reta.startPointX() - 5 &&
+      offsetX <= reta.startPointX() + 5 &&
+      offsetY >= reta.startPointY() - 5 &&
+      offsetY <= reta.startPointY() + 5;
+  
+    var endPointClicked =
       offsetX >= reta.endPointX() - 5 &&
       offsetX <= reta.endPointX() + 5 &&
       offsetY >= reta.endPointY() - 5 &&
-      offsetY <= reta.endPointY() + 5
-    ) {
-      reta.height = offsetY - reta.startPointY();
-    } else {
-      reta.width = offsetX - reta.startPointX();
-      reta.height = offsetY - reta.startPointY();
-      // Atualiza a coordenada y do ponto inicial
+      offsetY <= reta.endPointY() + 5;
+  
+    if (startPointClicked || endPointClicked) {
+      var startX = reta.startPointX();
+      var startY = reta.startPointY();
+      var endX = reta.endPointX();
+      var endY = reta.endPointY();
+  
+      canvas.addEventListener("mousemove", dragRe);
+      canvas.addEventListener("mouseup", function () {
+      canvas.removeEventListener("mousemove", dragRe);
+      });
+  
+      function dragRe(event) {
+        var newOffsetX = event.clientX - canvas.getBoundingClientRect().left;
+        var newOffsetY = event.clientY - canvas.getBoundingClientRect().top;
+  
+        if (startPointClicked) {
+          var diffX = newOffsetX - offsetX;
+          var diffY = newOffsetY - offsetY;
+          reta.x = startX + diffX;
+          reta.y = startY + diffY;
+          reta.width = endX - reta.x;
+          reta.height = endY - reta.y;
+        } else if (endPointClicked) {
+          reta.width = newOffsetX - reta.startPointX();
+          reta.height = newOffsetY - reta.startPointY();
+        }
+  
+        drawReta();
+      }
     }
-  
-    drawReta();
   }
-  
-  
-
-// Adicionar evento de clique duplo ao canvas
-canvas.addEventListener("dblclick", function (event) {
-  var offsetX = event.clientX - canvas.getBoundingClientRect().left;
-  var offsetY = event.clientY - canvas.getBoundingClientRect().top;
-  // Verificar se o clique ocorreu na reta
-  if (
-    offsetX >= reta.startPointX() &&
-    offsetX <= reta.endPointX() &&
-    offsetY >= reta.startPointY() &&
-    offsetY <= reta.endPointY()
-  ) {
-    // Rotacionar a reta em 45 graus
-    reta.rotation += Math.PI / 4;
-
-    drawReta();
-  }
-});
 
 drawReta(); // Desenhar a reta inicial
 

@@ -72,10 +72,11 @@ function Reta() {
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
 
     // Verificar se o clique ocorreu no ponto médio
-    if (      offsetX >= reta.centerX() - 5 &&
-    offsetX <= reta.centerX() + 5 &&
-    offsetY >= reta.centerY() - 5 &&
-    offsetY <= reta.centerY() + 5
+    if (      
+      offsetX >= reta.centerX() - 5 &&
+      offsetX <= reta.centerX() + 5 &&
+      offsetY >= reta.centerY() - 5 &&
+      offsetY <= reta.centerY() + 5
   ) {
     // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
     canvas.addEventListener("mousemove", moveReta);
@@ -85,12 +86,15 @@ function Reta() {
     });
   }
 
-  // Verificar se o clique ocorreu na ponta esquerda
   if (
-    offsetX >= reta.startPointX() - 5 &&
-    offsetX <= reta.startPointX() + 5 &&
-    offsetY >= reta.startPointY() - 5 &&
-    offsetY <= reta.startPointY() + 5
+    (offsetX >= reta.startPointX() - 5 && 
+     offsetX <= reta.startPointX() + 5 && 
+     offsetY >= reta.startPointY() - 5 && 
+     offsetY <= reta.startPointY() + 5) ||
+    (offsetX >= reta.endPointX() - 5 && 
+    offsetX <= reta.endPointX() + 5 && 
+    offsetY >= reta.endPointY() - 5 && 
+    offsetY <= reta.endPointY() + 5)
   ) {
     // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
     canvas.addEventListener("mousemove", resizeReta);
@@ -141,6 +145,25 @@ canvas.addEventListener("dblclick", function (event) {
 drawReta(); // Desenhar a reta inicial
 
 }
+
+function Poligono() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var canvasCenterX = canvas.width / 2;
+  var canvasCenterY = canvas.height / 2;
+  ctx.beginPath();
+  ctx.moveTo(canvasCenterX - 75, canvasCenterY - 75);
+  ctx.lineTo(canvasCenterX + 75, canvasCenterY - 75);
+  ctx.lineWidth = 5;
+  ctx.lineTo(canvasCenterX, canvasCenterY + 75);
+  ctx.closePath();
+  ctx.stroke();
+}
+
+var RetaBotao = document.getElementById("RetaBotao");
+RetaBotao.addEventListener("click", Reta);
+
+var poligonoBotao = document.getElementById("poligonoBotao");
+poligonoBotao.addEventListener("click", Poligono);
 
 Reta();
 

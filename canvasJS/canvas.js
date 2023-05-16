@@ -41,13 +41,9 @@ function Reta() {
 
   retas.push(reta);
 
-  function drawRetas() {
-    for (var i = 0; i < retas.length; i++) {
-      drawReta(retas[i]);
-    }
-  }
 
   function drawReta(reta) {
+    console.log("teste");
     ctx.beginPath();
     ctx.moveTo(reta.startPointX(), reta.startPointY());
     ctx.lineTo(reta.centerX(), reta.centerY());
@@ -71,6 +67,12 @@ function Reta() {
     ctx.arc(reta.endPointX(), reta.endPointY(), 4, 0, Math.PI * 2);
     ctx.fillStyle = "red";
     ctx.fill();
+  }
+
+  function drawRetas() {
+    for (var i = 0; i < retas.length; i++) {
+      drawReta(retas[i]);
+    }
   }
 
 
@@ -118,25 +120,27 @@ function Reta() {
         }
         break
       case 2:
+        //ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (
           offsetX >= reta.startPointX() - 5 &&
           offsetX <= reta.endPointX() + 5 &&
           offsetY >= reta.startPointY() - 5 &&
           offsetY <= reta.endPointY() + 5
         ) {
-          // O clique está em cima da reta
+          
           var newReta = {
-            x: reta.startPointX(),
-            y: reta.startPointY(),
-            rotation: 0,
-            width: reta.width * 2,
-            height: reta.height * 2
+            startPointX: reta.endPointX(),
+            startPointY: offsetY,
+            endPointX: reta.endPointX(),
+            endPointY: reta.endPointY(),
           };
-
-
           reta.width = offsetX - reta.startPointX();
           reta.height = offsetY - reta.startPointY();
-
+          
+          console.log(newReta.startPointX, newReta.startPointY, " -> ", newReta.endPointX, newReta.endPointY);
+          console.log(reta.x, reta.y, " -> ", reta.endPointX(), reta.endPointY());
+          console.log(retas);
+          
           retas.push(newReta);
           drawRetas();
         }
@@ -197,8 +201,8 @@ function Reta() {
           reta.width = newOffsetX - reta.startPointX();
           reta.height = newOffsetY - reta.startPointY();
         }
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         drawReta(reta);
       }
     }

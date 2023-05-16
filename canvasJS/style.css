@@ -21,6 +21,18 @@
     transform: translate(-50%, -50%);
 }
 
+#poligonoBotao1 {
+    position: fixed;
+    right: 15%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+}
+#poligonoBotao2 {
+    position: fixed;
+    right: 10%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+}
 .meu-botao {
     background-color: #1b1b1b;
     border: none;

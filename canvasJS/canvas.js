@@ -1,6 +1,8 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+var retas = [];
+
 function Reta() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -64,42 +66,52 @@ function Reta() {
     ctx.fill();
   }
 
+  canvas.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  })
+
   // Adicionar evento de clique ao canvas
   canvas.addEventListener("mousedown", function (event) {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
 
-    // Verificar se o clique ocorreu no ponto médio
-    if (
-      offsetX >= reta.centerX() - 5 &&
-      offsetX <= reta.centerX() + 5 &&
-      offsetY >= reta.centerY() - 5 &&
-      offsetY <= reta.centerY() + 5
-    ) {
-      // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-      canvas.addEventListener("mousemove", moveReta);
-
-      canvas.addEventListener("mouseup", function () {
-        canvas.removeEventListener("mousemove", moveReta);
-      });
-    }
-
-    if (
-      (offsetX >= reta.startPointX() - 5 &&
-        offsetX <= reta.startPointX() + 5 &&
-        offsetY >= reta.startPointY() - 5 &&
-        offsetY <= reta.startPointY() + 5) ||
-      (offsetX >= reta.endPointX() - 5 &&
-        offsetX <= reta.endPointX() + 5 &&
-        offsetY >= reta.endPointY() - 5 &&
-        offsetY <= reta.endPointY() + 5)
-    ) {
-      // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-      canvas.addEventListener("mousemove", resizeReta);
-
-      canvas.addEventListener("mouseup", function () {
-        canvas.removeEventListener("mousemove", resizeReta);
-      });
+    switch(event.buttons) {
+      case 1: 
+      if (
+        offsetX >= reta.centerX() - 5 &&
+        offsetX <= reta.centerX() + 5 &&
+        offsetY >= reta.centerY() - 5 &&
+        offsetY <= reta.centerY() + 5
+      ) {
+        // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+        canvas.addEventListener("mousemove", moveReta);
+  
+        canvas.addEventListener("mouseup", function () {
+          canvas.removeEventListener("mousemove", moveReta);
+        });
+      }
+  
+      if (
+        (offsetX >= reta.startPointX() - 5 &&
+          offsetX <= reta.startPointX() + 5 &&
+          offsetY >= reta.startPointY() - 5 &&
+          offsetY <= reta.startPointY() + 5) ||
+        (offsetX >= reta.endPointX() - 5 &&
+          offsetX <= reta.endPointX() + 5 &&
+          offsetY >= reta.endPointY() - 5 &&
+          offsetY <= reta.endPointY() + 5)
+      ) {
+        // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+        canvas.addEventListener("mousemove", resizeReta);
+  
+        canvas.addEventListener("mouseup", function () {
+          canvas.removeEventListener("mousemove", resizeReta);
+        });
+      }
+        break
+      case 2:
+        break
+           
     }
   });
 

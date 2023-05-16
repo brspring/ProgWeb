@@ -6,8 +6,8 @@ function Reta() {
 
   // Definir as propriedades do objeto 'reta'
   var reta = {
-    x: 100,
-    y: 100,
+    x: 350,
+    y: 350,
     rotation: 0,
     width: 150,
     height: 150,
@@ -72,57 +72,73 @@ function Reta() {
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
 
     // Verificar se o clique ocorreu no ponto médio
-    if (      
+    if (
       offsetX >= reta.centerX() - 5 &&
       offsetX <= reta.centerX() + 5 &&
       offsetY >= reta.centerY() - 5 &&
       offsetY <= reta.centerY() + 5
-  ) {
-    // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-    canvas.addEventListener("mousemove", moveReta);
+    ) {
+      // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+      canvas.addEventListener("mousemove", moveReta);
 
-    canvas.addEventListener("mouseup", function () {
-      canvas.removeEventListener("mousemove", moveReta);
-    });
-  }
+      canvas.addEventListener("mouseup", function () {
+        canvas.removeEventListener("mousemove", moveReta);
+      });
+    }
 
-  if (
-    (offsetX >= reta.startPointX() - 5 && 
-     offsetX <= reta.startPointX() + 5 && 
-     offsetY >= reta.startPointY() - 5 && 
-     offsetY <= reta.startPointY() + 5) ||
-    (offsetX >= reta.endPointX() - 5 && 
-    offsetX <= reta.endPointX() + 5 && 
-    offsetY >= reta.endPointY() - 5 && 
-    offsetY <= reta.endPointY() + 5)
-  ) {
-    // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-    canvas.addEventListener("mousemove", resizeReta);
+    if (
+      (offsetX >= reta.startPointX() - 5 &&
+        offsetX <= reta.startPointX() + 5 &&
+        offsetY >= reta.startPointY() - 5 &&
+        offsetY <= reta.startPointY() + 5) ||
+      (offsetX >= reta.endPointX() - 5 &&
+        offsetX <= reta.endPointX() + 5 &&
+        offsetY >= reta.endPointY() - 5 &&
+        offsetY <= reta.endPointY() + 5)
+    ) {
+      // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+      canvas.addEventListener("mousemove", resizeReta);
 
-    canvas.addEventListener("mouseup", function () {
-      canvas.removeEventListener("mousemove", resizeReta);
-    });
-  }
+      canvas.addEventListener("mouseup", function () {
+        canvas.removeEventListener("mousemove", resizeReta);
+      });
+    }
   });
 
-function moveReta(event) {
-  var offsetX = event.clientX - canvas.getBoundingClientRect().left;
-  var offsetY = event.clientY - canvas.getBoundingClientRect().top;
-  reta.x += offsetX - reta.centerX();
-  reta.y += offsetY - reta.centerY();
+  function moveReta(event) {
+    var offsetX = event.clientX - canvas.getBoundingClientRect().left;
+    var offsetY = event.clientY - canvas.getBoundingClientRect().top;
+    reta.x += offsetX - reta.centerX();
+    reta.y += offsetY - reta.centerY();
 
-  drawReta();
-}
+    drawReta();
+  }
 
-function resizeReta(event) {
-  var offsetX = event.clientX - canvas.getBoundingClientRect().left;
-  var offsetY = event.clientY - canvas.getBoundingClientRect().top;
-
-  reta.height += reta.startPointY() - offsetY;
-  reta.y -= reta.startPointY() - offsetY;
-
-  drawReta();
-}
+  function resizeReta(event) {
+    var offsetX = event.clientX - canvas.getBoundingClientRect().left;
+    var offsetY = event.clientY - canvas.getBoundingClientRect().top;
+  
+    if (
+      offsetX >= reta.startPointX() - 5 &&
+      offsetX <= reta.startPointX() + 5 &&
+      offsetY >= reta.startPointY() - 5 &&
+      offsetY <= reta.startPointY() + 5
+    ) {
+      // Movendo o ponto inicial da reta
+      reta.height += reta.startPointY() - offsetY;
+      reta.y += offsetY - reta.startPointY();
+    } else if (
+      offsetX >= reta.endPointX() - 5 &&
+      offsetX <= reta.endPointX() + 5 &&
+      offsetY >= reta.endPointY() - 5 &&
+      offsetY <= reta.endPointY() + 5
+    ) {
+      // Movendo o ponto final da reta
+      reta.height = offsetY - reta.startPointY();
+    }
+  
+    drawReta();
+  }
 
 // Adicionar evento de clique duplo ao canvas
 canvas.addEventListener("dblclick", function (event) {

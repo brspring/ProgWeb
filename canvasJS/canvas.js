@@ -25,22 +25,29 @@ function Reta() {
     startPointX: function () {
       return this.centerX() - this.width / 2;
     },
-    
+
     startPointY: function () {
       return this.centerY() - this.height / 2;
     },
-    
+
     endPointX: function () {
       return this.centerX() + this.width / 2;
     },
-    
+
     endPointY: function () {
       return this.centerY() + this.height / 2;
     }
   };
 
-  function drawReta() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  retas.push(reta);
+
+  function drawRetas() {
+    for (var i = 0; i < retas.length; i++) {
+      drawReta(retas[i]);
+    }
+  }
+
+  function drawReta(reta) {
     ctx.beginPath();
     ctx.moveTo(reta.startPointX(), reta.startPointY());
     ctx.lineTo(reta.centerX(), reta.centerY());
@@ -66,6 +73,7 @@ function Reta() {
     ctx.fill();
   }
 
+
   canvas.addEventListener('contextmenu', function (e) {
     e.preventDefault();
   })
@@ -75,43 +83,65 @@ function Reta() {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
 
-    switch(event.buttons) {
-      case 1: 
-      if (
-        offsetX >= reta.centerX() - 5 &&
-        offsetX <= reta.centerX() + 5 &&
-        offsetY >= reta.centerY() - 5 &&
-        offsetY <= reta.centerY() + 5
-      ) {
-        // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-        canvas.addEventListener("mousemove", moveReta);
-  
-        canvas.addEventListener("mouseup", function () {
-          canvas.removeEventListener("mousemove", moveReta);
-        });
-      }
-  
-      if (
-        (offsetX >= reta.startPointX() - 5 &&
-          offsetX <= reta.startPointX() + 5 &&
-          offsetY >= reta.startPointY() - 5 &&
-          offsetY <= reta.startPointY() + 5) ||
-        (offsetX >= reta.endPointX() - 5 &&
-          offsetX <= reta.endPointX() + 5 &&
-          offsetY >= reta.endPointY() - 5 &&
-          offsetY <= reta.endPointY() + 5)
-      ) {
-        // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
-        canvas.addEventListener("mousemove", resizeReta);
-  
-        canvas.addEventListener("mouseup", function () {
-          canvas.removeEventListener("mousemove", resizeReta);
-        });
-      }
+    switch (event.buttons) {
+      case 1:
+        if (
+          offsetX >= reta.centerX() - 5 &&
+          offsetX <= reta.centerX() + 5 &&
+          offsetY >= reta.centerY() - 5 &&
+          offsetY <= reta.centerY() + 5
+        ) {
+          // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+          canvas.addEventListener("mousemove", moveReta);
+
+          canvas.addEventListener("mouseup", function () {
+            canvas.removeEventListener("mousemove", moveReta);
+          });
+        }
+
+        if (
+          (offsetX >= reta.startPointX() - 5 &&
+            offsetX <= reta.startPointX() + 5 &&
+            offsetY >= reta.startPointY() - 5 &&
+            offsetY <= reta.startPointY() + 5) ||
+          (offsetX >= reta.endPointX() - 5 &&
+            offsetX <= reta.endPointX() + 5 &&
+            offsetY >= reta.endPointY() - 5 &&
+            offsetY <= reta.endPointY() + 5)
+        ) {
+          // Atualizar as coordenadas do objeto 'reta' com base no deslocamento do mouse
+          canvas.addEventListener("mousemove", resizeReta);
+
+          canvas.addEventListener("mouseup", function () {
+            canvas.removeEventListener("mousemove", resizeReta);
+          });
+        }
         break
       case 2:
+        if (
+          offsetX >= reta.startPointX() - 5 &&
+          offsetX <= reta.endPointX() + 5 &&
+          offsetY >= reta.startPointY() - 5 &&
+          offsetY <= reta.endPointY() + 5
+        ) {
+          // O clique está em cima da reta
+          var newReta = {
+            x: reta.startPointX(),
+            y: reta.startPointY(),
+            rotation: 0,
+            width: reta.width * 2,
+            height: reta.height * 2
+          };
+
+
+          reta.width = offsetX - reta.startPointX();
+          reta.height = offsetY - reta.startPointY();
+
+          retas.push(newReta);
+          drawRetas();
+        }
         break
-           
+
     }
   });
 
@@ -121,40 +151,41 @@ function Reta() {
     reta.x += offsetX - reta.centerX();
     reta.y += offsetY - reta.centerY();
 
-    drawReta();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawReta(reta);
   }
 
   function resizeReta(event) {
     var offsetX = event.clientX - canvas.getBoundingClientRect().left;
     var offsetY = event.clientY - canvas.getBoundingClientRect().top;
-  
+
     var startPointClicked =
       offsetX >= reta.startPointX() - 5 &&
       offsetX <= reta.startPointX() + 5 &&
       offsetY >= reta.startPointY() - 5 &&
       offsetY <= reta.startPointY() + 5;
-  
+
     var endPointClicked =
       offsetX >= reta.endPointX() - 5 &&
       offsetX <= reta.endPointX() + 5 &&
       offsetY >= reta.endPointY() - 5 &&
       offsetY <= reta.endPointY() + 5;
-  
+
     if (startPointClicked || endPointClicked) {
       var startX = reta.startPointX();
       var startY = reta.startPointY();
       var endX = reta.endPointX();
       var endY = reta.endPointY();
-  
+
       canvas.addEventListener("mousemove", dragRe);
       canvas.addEventListener("mouseup", function () {
-      canvas.removeEventListener("mousemove", dragRe);
+        canvas.removeEventListener("mousemove", dragRe);
       });
-  
+
       function dragRe(event) {
         var newOffsetX = event.clientX - canvas.getBoundingClientRect().left;
         var newOffsetY = event.clientY - canvas.getBoundingClientRect().top;
-  
+
         if (startPointClicked) {
           var diffX = newOffsetX - offsetX;
           var diffY = newOffsetY - offsetY;
@@ -166,13 +197,14 @@ function Reta() {
           reta.width = newOffsetX - reta.startPointX();
           reta.height = newOffsetY - reta.startPointY();
         }
-  
-        drawReta();
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawReta(reta);
       }
     }
   }
 
-drawReta(); // Desenhar a reta inicial
+  drawReta(reta); // Desenhar a reta inicial
 
 }
 

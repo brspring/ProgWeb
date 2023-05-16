@@ -126,12 +126,15 @@ function Reta() {
       offsetY <= reta.endPointY() + 5
     ) {
       reta.height = offsetY - reta.startPointY();
-    }else {
+    } else {
       reta.width = offsetX - reta.startPointX();
       reta.height = offsetY - reta.startPointY();
+      // Atualiza a coordenada y do ponto inicial
     }
+  
     drawReta();
   }
+  
   
 
 // Adicionar evento de clique duplo ao canvas

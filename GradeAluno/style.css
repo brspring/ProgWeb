@@ -1,0 +1,81 @@
+html {
+    font-family: Arial;
+    font-size: 1.2em;
+    outline: none;
+}
+
+body {
+    background: #8a8a8a;
+    ;
+}
+
+.container h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.container h6 {
+    font-size: 1em;
+    font-weight: normal;
+    opacity: 0.7;
+    color: #000000;
+    margin-bottom: 10px;
+    top: 30px;
+    left: 0;
+}
+
+#studentSelect {
+    display: inline-block;
+    width: 150px;
+    padding: 8px;
+    font-size: 0.8em;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 30px;
+}
+
+#loadStudent {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 0.8em;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+
+#loadStudent:hover {
+    background-color: #555;
+}
+
+.input-group-append {
+    display: inline-block;
+    vertical-align: top;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    color: #ffffff;
+    font-size: 0.9em;
+    padding: 6px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #333;;
+}
+
+td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100px;
+    height: 100px;
+    box-sizing: border-box;
+}

@@ -14,3 +14,5 @@ em ruby TUDO é objeto kkk...).
 
 Para executar o programa, basta colocar a operacao, o nome da tabela (no singular), atributo e o valor.
 
+./criaTudo.sh
+

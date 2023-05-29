@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="script.js">
     <title>Grade Curricular</title>
 </head>
 
-<body onload=main()>
+<body>
     <div class="container">
         <h1>Grade Curricular</h1>
         <h6>Insira o GRR do aluno:</h6>
@@ -18,7 +17,7 @@
             <input id="studentSelect" type="text" class="form-control" placeholder="GRR00000000" aria-label=""
                 aria-describedby="button-addon2">
             <div class="input-group-append">
-                <button id="loadStudent" type="button" class="btn btn-dark">Carregar</button>
+                <button id="loadStudent" type="button">Carregar</button>
             </div>
         </div>
         <table class="table table-striped">
@@ -77,7 +76,7 @@
                 </tr>
                 <tr>
                     <td id="CM201" class="tableCell">Cálculo Diferencial e Integral I (CM201)</td>
-                    <td id="CM202" class="tableCell">Cálculo Diferencial e Integral II (CM201)</td>
+                    <td id="CM202" class="tableCell">Cálculo Diferencial e Integral II (CM202)</td>
                     <td id="CI166" class="tableCell">Metodologia Científica (CI166)</td>
                     <td id="CI164" class="tableCell">Introdução à Computação Científica (CI164)</td>
                     <td id="SA214" class="tableCell">Introdução a Teoria Geral da Administração (SA214)</td>
@@ -87,15 +86,19 @@
                 </tr>
             </tbody>
         </table>
-        <!-- Modal HTML embedded directly into document -->
-        <div id="modalwindow" class="modal" style="overflow: visible">
-        </div>
+
 
         <!-- Link to open the modal -->
         <!-- <p><a href="#modal" rel="modal:open">Open Modal</a></p> -->
     </div>
-    <script type="text/javascript" src="javascript/table.js"></script>
-    <script type="text/javascript" src="javascript/xml.js"></script>
+    <div id="modal" class="modal">
+        <div id="modalContent" class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <div id="modalData"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 
 </html>

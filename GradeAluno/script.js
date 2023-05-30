@@ -24,7 +24,7 @@ function extractMateriasAluno(xmlString, matricula) {
     const matriculaAluno = matriculaNode.textContent;
 
     if (matriculaAluno === matricula) {
-      const materiaNodes = tagAluno.getElementsByTagName("NOME_ATIV_CURRIC");
+      const materiaNodes = tagAluno.getElementsByTagName("COD_ATIV_CURRIC");
 
       for (let j = 0; j < materiaNodes.length; j++) {
         const materiaNode = materiaNodes[j];
@@ -71,7 +71,8 @@ function showModal(id) {
   };
 
   // Acessar os dados da última vez que a matéria foi cursada
-  const dados = dadosUltimaVez[id];
+  //
+const dados = dadosUltimaVez[id];
 
   // Exibir os dados no modal
   const modalData = document.getElementById('modalData');
@@ -112,55 +113,6 @@ const closeModalButton = document.getElementById('closeModal');
 // Adiciona o evento de clique para fechar o modal
 closeModalButton.addEventListener('click', closeModal);
 
-// Função para extrair as informações do aluno do XML
-function extractAlunoInfo(xmlString, matricula) {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xmlString, "text/xml");
 
-  const tagAlunos = xmlDoc.getElementsByTagName("ALUNO");
-  const alunoInfo = {};
-
-  for (let i = 0; i < tagAlunos.length; i++) {
-    const tagAluno = tagAlunos[i];
-    const matriculaNode = tagAluno.getElementsByTagName("MATR_ALUNO")[0];
-    const matriculaAluno = matriculaNode.textContent;
-
-    if (matriculaAluno === matricula) {
-      const materiasNodes = tagAluno.getElementsByTagName("MATERIA");
-      const materias = [];
-      const dadosUltimaVez = {};
-
-      for (let j = 0; j < materiasNodes.length; j++) {
-        const materiaNode = materiasNodes[j];
-        const codigoMateria = materiaNode.getElementsByTagName("COD_ATIV_CURRIC")[0].textContent;
-        const dadosMateria = {
-          data: materiaNode.getElementsByTagName("DATA")[0].textContent,
-          nota: parseFloat(materiaNode.getElementsByTagName("NOTA")[0].textContent),
-          frequencia: materiaNode.getElementsByTagName("FREQUENCIA")[0].textContent,
-          observacoes: materiaNode.getElementsByTagName("OBSERVACOES")[0].textContent
-        };
-
-        materias.push(codigoMateria);
-        dadosUltimaVez[codigoMateria] = dadosMateria;
-      }
-
-      alunoInfo.materias = materias;
-      alunoInfo.dadosUltimaVez = dadosUltimaVez;
-      break; // Encerra o loop após encontrar o aluno desejado
-    }
-  }
-
-  return alunoInfo;
-}
-
-
-// Adicionar evento de clique ao botão
-loadButton.addEventListener("click", function() {
-  const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
-  loadXMLFile(xmlFileURL, function(xmlString) {
-    const alunoInfo = extractAlunoInfo(xmlString, matriculaAluno);
-    console.log("Informações do aluno:", alunoInfo);
-  });
-});
 
 

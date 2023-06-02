@@ -74,68 +74,68 @@ function showModal(id) {
   const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
 
   loadXMLFile(xmlFileURL, function (xmlString) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+    const materiasAluno = extractMateriasAluno(xmlString, matriculaAluno);
+    const ultimaVez = materiasAluno.lastIndexOf(id);
 
-    const alunoElements = xmlDoc.getElementsByTagName('ALUNO');
-    let ultimaVez = null;
+    if (ultimaVez !== -1) {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+      const alunoElements = xmlDoc.getElementsByTagName('ALUNO');
 
-    // Percorrer todos os elementos 'ALUNO' para encontrar a última vez que o aluno fez a matéria com o ID fornecido
-    for (let i = 0; i < alunoElements.length; i++) {
-      const alunoElement = alunoElements[i];
-      const matriculaNode = alunoElement.getElementsByTagName('MATR_ALUNO')[0];
-      const matricula = matriculaNode.textContent;
+      for (let i = alunoElements.length - 1; i >= 0; i--) {
+        const alunoElement = alunoElements[i];
+        const matriculaNode = alunoElement.getElementsByTagName('MATR_ALUNO')[0];
+        const matricula = matriculaNode.textContent;
 
-      if (matricula === matriculaAluno) {
-        const materiaNodes = alunoElement.getElementsByTagName('COD_ATIV_CURRIC');
+        if (matricula === matriculaAluno) {
+          const materiaNodes = alunoElement.getElementsByTagName('COD_ATIV_CURRIC');
 
-        for (let j = 0; j < materiaNodes.length; j++) {
-          const materiaNode = materiaNodes[j];
-          const materia = materiaNode.textContent;
+          for (let j = materiaNodes.length - 1; j >= 0; j--) {
+            const materiaNode = materiaNodes[j];
+            const materia = materiaNode.textContent;
 
-          if (materia === id) {
-            const dataNode = alunoElement.getElementsByTagName('ANO')[0];
-            const notaNode = alunoElement.getElementsByTagName('MEDIA_FINAL')[0];
-            const situacaoNode = alunoElement.getElementsByTagName('SITUACAO')[0];
+            if (materia === id) {
+              const dataNode = alunoElement.getElementsByTagName('ANO')[j];
+              const notaNode = alunoElement.getElementsByTagName('MEDIA_FINAL')[j];
+              const situacaoNode = alunoElement.getElementsByTagName('SITUACAO')[j];
 
-            const data = dataNode.textContent;
-            const nota = notaNode.textContent;
-            const situacao = situacaoNode.textContent;
+              const data = dataNode.textContent;
+              const nota = notaNode.textContent;
+              const situacao = situacaoNode.textContent;
 
-            ultimaVez = {
-              data,
-              nota,
-              situacao,
-            };
+              // Exibir os dados no modal
+              const modalData = document.getElementById('modalData');
+              modalData.innerHTML = `
+                <h2>${id}</h2>
+                <p><strong>Data:</strong> ${data}</p>
+                <p><strong>Nota:</strong> ${nota}</p>
+                <p><strong>Situação:</strong> ${situacao}</p>
+              `;
 
-            break; // Parar a iteração após encontrar a última vez
+              // Abrir o modal
+              const modal = document.getElementById('modal');
+              modal.style.display = 'block';
+
+              return;
+            }
           }
-        }
-
-        if (ultimaVez) {
-          break; // Parar a iteração após encontrar a última vez
         }
       }
     }
 
-    if (ultimaVez) {
-      // Exibir os dados no modal
-      const modalData = document.getElementById('modalData');
-      modalData.innerHTML = `
-        <h2>${id}</h2>
-        <p><strong>Data:</strong> ${ultimaVez.data}</p>
-        <p><strong>Nota:</strong> ${ultimaVez.nota}</p>
-        <p><strong>Situação:</strong> ${ultimaVez.situacao}</p>
-      `;
+    // Exibir mensagem para matéria não cursada
+    const modalData = document.getElementById('modalData');
+    modalData.innerHTML = `
+      <h2>${id}</h2>
+      <p><strong> Matéria não cursada</strong></p>
+    `;
 
-      // Abrir o modal
-      const modal = document.getElementById('modal');
-      modal.style.display = 'block';
-    } else {
-      console.log('Nenhuma informação encontrada para a matéria com ID: ' + id);
-    }
+    // Abrir o modal
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
   });
 }
+
 
 
 

@@ -44,6 +44,22 @@ const xmlFileURL = "alunos.xml";
 const inputField = document.getElementById("studentSelect");
 const loadButton = document.getElementById("loadStudent");
 
+function extrairInformacoesMateria(xmlString) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+  const alunoElement = xmlDoc.querySelector("ALUNO");
+  const ano = alunoElement.querySelector("ANO").textContent;
+  const nota = alunoElement.querySelector("MEDIA_FINAL").textContent;
+  const situacao = alunoElement.querySelector("SITUACAO").textContent;
+
+  return {
+    ano,
+    nota,
+    situacao,
+  };
+}
+
 // Adicionar evento de clique ao botão
 loadButton.addEventListener("click", function () {
   const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
@@ -54,40 +70,73 @@ loadButton.addEventListener("click", function () {
 });
 
 function showModal(id) {
-  const dadosUltimaVez = {
-    CI068: {
-      data: '01/01/2023',
-      nota: 8.5,
-      frequencia: 'Presente',
-      observacoes: 'Bom desempenho'
-    },
-    CI210: {
-      data: '02/02/2023',
-      nota: 7.2,
-      frequencia: 'Presente',
-      observacoes: 'Participação ativa'
-    },
-    // ... outros dados das matérias
-  };
+  const xmlFileURL = 'alunos.xml'; // URL do arquivo XML
+  const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
 
-  // Acessar os dados da última vez que a matéria foi cursada
-  //
-const dados = dadosUltimaVez[id];
+  loadXMLFile(xmlFileURL, function (xmlString) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
 
-  // Exibir os dados no modal
-  const modalData = document.getElementById('modalData');
-  modalData.innerHTML = `
-      <h2>${id}</h2>
-      <p><strong>Data:</strong> ${dados.data}</p>
-      <p><strong>Nota:</strong> ${dados.nota}</p>
-      <p><strong>Frequência:</strong> ${dados.frequencia}</p>
-      <p><strong>Observações:</strong> ${dados.observacoes}</p>
-  `;
+    const alunoElements = xmlDoc.getElementsByTagName('ALUNO');
+    let ultimaVez = null;
 
-  // Abrir o modal
-  const modal = document.getElementById('modal');
-  modal.style.display = 'block';
+    // Percorrer todos os elementos 'ALUNO' para encontrar a última vez que o aluno fez a matéria com o ID fornecido
+    for (let i = 0; i < alunoElements.length; i++) {
+      const alunoElement = alunoElements[i];
+      const matriculaNode = alunoElement.getElementsByTagName('MATR_ALUNO')[0];
+      const matricula = matriculaNode.textContent;
+
+      if (matricula === matriculaAluno) {
+        const materiaNodes = alunoElement.getElementsByTagName('COD_ATIV_CURRIC');
+
+        for (let j = 0; j < materiaNodes.length; j++) {
+          const materiaNode = materiaNodes[j];
+          const materia = materiaNode.textContent;
+
+          if (materia === id) {
+            const dataNode = alunoElement.getElementsByTagName('ANO')[0];
+            const notaNode = alunoElement.getElementsByTagName('MEDIA_FINAL')[0];
+            const situacaoNode = alunoElement.getElementsByTagName('SITUACAO')[0];
+
+            const data = dataNode.textContent;
+            const nota = notaNode.textContent;
+            const situacao = situacaoNode.textContent;
+
+            ultimaVez = {
+              data,
+              nota,
+              situacao,
+            };
+
+            break; // Parar a iteração após encontrar a última vez
+          }
+        }
+
+        if (ultimaVez) {
+          break; // Parar a iteração após encontrar a última vez
+        }
+      }
+    }
+
+    if (ultimaVez) {
+      // Exibir os dados no modal
+      const modalData = document.getElementById('modalData');
+      modalData.innerHTML = `
+        <h2>${id}</h2>
+        <p><strong>Data:</strong> ${ultimaVez.data}</p>
+        <p><strong>Nota:</strong> ${ultimaVez.nota}</p>
+        <p><strong>Situação:</strong> ${ultimaVez.situacao}</p>
+      `;
+
+      // Abrir o modal
+      const modal = document.getElementById('modal');
+      modal.style.display = 'block';
+    } else {
+      console.log('Nenhuma informação encontrada para a matéria com ID: ' + id);
+    }
+  });
 }
+
 
 
 // Obtém todas as células da tabela com um id de matéria

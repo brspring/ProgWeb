@@ -1,7 +1,7 @@
 // Função para carregar o arquivo XML usando uma solicitação HTTP
 function loadXMLFile(url, callback) {
   var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
+  xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       callback(xmlhttp.responseText);
     }
@@ -37,13 +37,7 @@ function extractMateriasAluno(xmlString, matricula) {
   return materias;
 }
 
-// Carregar o arquivo XML e extrair as matérias do aluno
-const xmlFileURL = "alunos.xml";
-
-// Obter referência aos elementos do HTML
-const inputField = document.getElementById("studentSelect");
-const loadButton = document.getElementById("loadStudent");
-
+// Função para extrair informações de uma matéria específica do XML
 function extrairInformacoesMateria(xmlString) {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xmlString, "text/xml");
@@ -60,61 +54,80 @@ function extrairInformacoesMateria(xmlString) {
   };
 }
 
+// Obter referência aos elementos do HTML
+const inputField = document.getElementById("studentSelect");
+const loadButton = document.getElementById("loadStudent");
+
 // Adicionar evento de clique ao botão
-loadButton.addEventListener("click", function () {
+loadButton.addEventListener("click", function() {
   const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
-  loadXMLFile(xmlFileURL, function (xmlString) {
+
+  console.clear();
+  
+  // Restaurar a cor de fundo da grade
+  const cells = document.querySelectorAll(".tableCell");
+  cells.forEach((cell) => {
+    cell.style.backgroundColor = "";
+  });
+
+  const xmlFileURL = "alunos.xml"; // URL do arquivo XML
+
+  loadXMLFile(xmlFileURL, function(xmlString) {
     const materiasAluno = extractMateriasAluno(xmlString, matriculaAluno);
     console.log("Matérias do aluno:", materiasAluno);
   });
 });
 
+// Função para exibir o modal com as informações da matéria
 function showModal(id) {
-  const xmlFileURL = 'alunos.xml'; // URL do arquivo XML
+  const xmlFileURL = "alunos.xml"; // URL do arquivo XML
   const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
 
-  loadXMLFile(xmlFileURL, function (xmlString) {
+  loadXMLFile(xmlFileURL, function(xmlString) {
     const materiasAluno = extractMateriasAluno(xmlString, matriculaAluno);
     const ultimaVez = materiasAluno.lastIndexOf(id);
 
     if (ultimaVez !== -1) {
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-      const alunoElements = xmlDoc.getElementsByTagName('ALUNO');
+      const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+      const alunoElements = xmlDoc.getElementsByTagName("ALUNO");
 
       for (let i = alunoElements.length - 1; i >= 0; i--) {
         const alunoElement = alunoElements[i];
-        const matriculaNode = alunoElement.getElementsByTagName('MATR_ALUNO')[0];
+        const matriculaNode = alunoElement.getElementsByTagName("MATR_ALUNO")[0];
         const matricula = matriculaNode.textContent;
 
         if (matricula === matriculaAluno) {
-          const materiaNodes = alunoElement.getElementsByTagName('COD_ATIV_CURRIC');
+          const materiaNodes = alunoElement.getElementsByTagName("COD_ATIV_CURRIC");
 
           for (let j = materiaNodes.length - 1; j >= 0; j--) {
             const materiaNode = materiaNodes[j];
             const materia = materiaNode.textContent;
 
             if (materia === id) {
-              const dataNode = alunoElement.getElementsByTagName('ANO')[j];
-              const notaNode = alunoElement.getElementsByTagName('MEDIA_FINAL')[j];
-              const situacaoNode = alunoElement.getElementsByTagName('SITUACAO')[j];
+              const dataNode = alunoElement.getElementsByTagName("ANO")[j];
+              const notaNode = alunoElement.getElementsByTagName("MEDIA_FINAL")[j];
+              const situacaoNode = alunoElement.getElementsByTagName("SITUACAO")[j];
+              const frequenciaNode = alunoElement.getElementsByTagName("FREQUENCIA")[j];
 
               const data = dataNode.textContent;
               const nota = notaNode.textContent;
               const situacao = situacaoNode.textContent;
+              const frequencia = frequenciaNode.textContent;
 
               // Exibir os dados no modal
-              const modalData = document.getElementById('modalData');
+              const modalData = document.getElementById("modalData");
               modalData.innerHTML = `
                 <h2>${id}</h2>
                 <p><strong>Data:</strong> ${data}</p>
                 <p><strong>Nota:</strong> ${nota}</p>
                 <p><strong>Situação:</strong> ${situacao}</p>
+                <p><strong>Frequencia:</strong> ${frequencia}</p>
               `;
 
               // Abrir o modal
-              const modal = document.getElementById('modal');
-              modal.style.display = 'block';
+              const modal = document.getElementById("modal");
+              modal.style.display = "block";
 
               return;
             }
@@ -124,44 +137,37 @@ function showModal(id) {
     }
 
     // Exibir mensagem para matéria não cursada
-    const modalData = document.getElementById('modalData');
+    const modalData = document.getElementById("modalData");
     modalData.innerHTML = `
       <h2>${id}</h2>
       <p><strong> Matéria não cursada</strong></p>
     `;
 
     // Abrir o modal
-    const modal = document.getElementById('modal');
-    modal.style.display = 'block';
+    const modal = document.getElementById("modal");
+    modal.style.display = "block";
   });
 }
 
-
-
+// Função para fechar o modal
+function closeModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
 
 // Obtém todas as células da tabela com um id de matéria
-const cells = document.querySelectorAll('.tableCell[id]');
+const cells = document.querySelectorAll(".tableCell[id]");
 
 // Adiciona o evento de clique para cada célula
 cells.forEach((cell) => {
-  cell.addEventListener('click', function () {
+  cell.addEventListener("click", function() {
     const id = this.id;
     showModal(id);
   });
 });
 
-// Função para fechar o modal
-function closeModal() {
-  const modal = document.getElementById('modal');
-  modal.style.display = 'none';
-}
-
 // Obtém o elemento do "X" para adicionar o evento de clique
-const closeModalButton = document.getElementById('closeModal');
+const closeModalButton = document.getElementById("closeModal");
 
 // Adiciona o evento de clique para fechar o modal
-closeModalButton.addEventListener('click', closeModal);
-
-
-
-
+closeModalButton.addEventListener("click", closeModal);

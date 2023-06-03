@@ -82,11 +82,11 @@ function pintarGradeAluno(xmlString, matriculaAluno) {
 
       if (situacao === "Aprovado") {
         cell.style.backgroundColor = "green";
-      } else if (situacao === "Reprovado") {
+      } else if (situacao === "Reprovado" ||situacao === "Repr. Freq"||situacao === "Tr. Total" || situacao === "TrancAdm") {
         cell.style.backgroundColor = "red";
       } else if (situacao === "Matricula") {
         cell.style.backgroundColor = "blue";
-      } else if(situacao === "Equivale"){
+      } else if (situacao === "Equivale") {
         cell.style.backgroundColor = "yellow";
       }
     }
@@ -94,16 +94,28 @@ function pintarGradeAluno(xmlString, matriculaAluno) {
 }
 
 
-// Obter referência aos elementos do HTML
+
+//Obtém referência aos elementos do HTML
 const inputField = document.getElementById("studentSelect");
 const loadButton = document.getElementById("loadStudent");
 
-// Adicionar evento de clique ao botão
+// Adiciona evento de clique ao botão
 loadButton.addEventListener("click", function() {
+  carregarAluno();
+});
+
+// Adiciona evento de tecla pressionada ao campo de entrada
+inputField.addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    carregarAluno();
+  }
+});
+
+function carregarAluno() {
   const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
 
   console.clear();
-  
+
   // Restaurar a cor de fundo da grade
   const cells = document.querySelectorAll(".tableCell");
   cells.forEach((cell) => {
@@ -118,7 +130,7 @@ loadButton.addEventListener("click", function() {
 
     pintarGradeAluno(xmlString, matriculaAluno);
   });
-});
+}
 
 // Função para exibir o modal com as informações da matéria
 function showModal(id) {

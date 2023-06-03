@@ -191,6 +191,85 @@ function showModal(id) {
   });
 }
 
+function showHistoricoModal(id) {
+  const xmlFileURL = "alunos.xml"; // URL do arquivo XML
+  const matriculaAluno = inputField.value; // Obter o valor digitado no campo de entrada
+
+  loadXMLFile(xmlFileURL, function(xmlString) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    const alunoElements = xmlDoc.getElementsByTagName("ALUNO");
+
+    const historico = [];
+
+    for (let i = alunoElements.length - 1; i >= 0; i--) {
+      const alunoElement = alunoElements[i];
+      const matriculaNode = alunoElement.getElementsByTagName("MATR_ALUNO")[0];
+      const matricula = matriculaNode.textContent;
+
+      if (matricula === matriculaAluno) {
+        const materiaNodes = alunoElement.getElementsByTagName("COD_ATIV_CURRIC");
+
+        for (let j = materiaNodes.length - 1; j >= 0; j--) {
+          const materiaNode = materiaNodes[j];
+          const materia = materiaNode.textContent;
+
+          if (materia === id) {
+            const dataNode = alunoElement.getElementsByTagName("ANO")[j];
+            const notaNode = alunoElement.getElementsByTagName("MEDIA_FINAL")[j];
+            const situacaoNode = alunoElement.getElementsByTagName("SITUACAO")[j];
+            const frequenciaNode = alunoElement.getElementsByTagName("FREQUENCIA")[j];
+
+            const data = dataNode.textContent;
+            const nota = notaNode.textContent;
+            const situacao = situacaoNode.textContent;
+            const frequencia = frequenciaNode.textContent;
+
+            historico.push({
+              data,
+              nota,
+              situacao,
+              frequencia,
+            });
+          }
+        }
+      }
+    }
+
+    if (historico.length > 0) {
+      // Construir a tabela de histórico
+      let table = "<table><tr><th>Data</th><th>Nota</th><th>Situação</th><th>Frequência</th></tr>";
+
+      for (let i = 0; i < historico.length; i++) {
+        const { data, nota, situacao, frequencia } = historico[i];
+
+        table += `<tr><td>${data}</td><td>${nota}</td><td>${situacao}</td><td>${frequencia}</td></tr>`;
+      }
+
+      table += "</table>";
+
+      // Exibir os dados no modal
+      const modalData = document.getElementById("modalData");
+      modalData.innerHTML = table;
+
+      // Abrir o modal
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    } else {
+      // Exibir mensagem para matéria não cursada
+      const modalData = document.getElementById("modalData");
+      modalData.innerHTML = `
+        <h2>${id}</h2>
+        <p><strong>Matéria não cursada</strong></p>
+      `;
+
+      // Abrir o modal
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    }
+  });
+}
+
 // Função para fechar o modal
 function closeModal() {
   const modal = document.getElementById("modal");
@@ -205,6 +284,15 @@ cells.forEach((cell) => {
   cell.addEventListener("click", function() {
     const id = this.id;
     showModal(id);
+  });
+});
+
+// Adiciona o evento de clique com o botão direito para cada célula
+cells.forEach((cell) => {
+  cell.addEventListener("contextmenu", function(event) {
+    event.preventDefault(); // Impede o menu de contexto padrão de ser exibido
+    const id = this.id;
+    showHistoricoModal(id);
   });
 });
 

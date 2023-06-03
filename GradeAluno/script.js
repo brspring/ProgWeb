@@ -38,21 +38,61 @@ function extractMateriasAluno(xmlString, matricula) {
 }
 
 // Função para extrair informações de uma matéria específica do XML
-function extrairInformacoesMateria(xmlString) {
+function extrairInformacoesMateria(xmlString, matriculaAluno) {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xmlString, "text/xml");
 
-  const alunoElement = xmlDoc.querySelector("ALUNO");
-  const ano = alunoElement.querySelector("ANO").textContent;
-  const nota = alunoElement.querySelector("MEDIA_FINAL").textContent;
-  const situacao = alunoElement.querySelector("SITUACAO").textContent;
+  const alunoElements = xmlDoc.getElementsByTagName("ALUNO");
+  const materias = {};
 
-  return {
-    ano,
-    nota,
-    situacao,
-  };
+  for (let i = alunoElements.length - 1; i >= 0; i--) {
+    const alunoElement = alunoElements[i];
+    const alunoId = alunoElement.querySelector("MATR_ALUNO").textContent;
+
+    if (alunoId === matriculaAluno) {
+      const sigla = alunoElement.querySelector("COD_ATIV_CURRIC").textContent;
+
+      if (!materias[sigla]) {
+        const ano = alunoElement.querySelector("ANO").textContent;
+        const nota = alunoElement.querySelector("MEDIA_FINAL").textContent;
+        const situacao = alunoElement.querySelector("SIGLA").textContent;
+
+        materias[sigla] = {
+          ano,
+          nota,
+          situacao,
+        };
+      }
+    }
+  }
+
+  return materias;
 }
+
+function pintarGradeAluno(xmlString, matriculaAluno) {
+  const materias = extrairInformacoesMateria(xmlString, matriculaAluno);
+
+  const cells = document.querySelectorAll(".tableCell");
+  cells.forEach((cell) => {
+    const materiaId = cell.id;
+    const materiaInfo = materias[materiaId];
+
+    if (materiaInfo) {
+      const situacao = materiaInfo.situacao;
+
+      if (situacao === "Aprovado") {
+        cell.style.backgroundColor = "green";
+      } else if (situacao === "Reprovado") {
+        cell.style.backgroundColor = "red";
+      } else if (situacao === "Matricula") {
+        cell.style.backgroundColor = "blue";
+      } else if(situacao === "Equivale"){
+        cell.style.backgroundColor = "yellow";
+      }
+    }
+  });
+}
+
 
 // Obter referência aos elementos do HTML
 const inputField = document.getElementById("studentSelect");
@@ -75,6 +115,8 @@ loadButton.addEventListener("click", function() {
   loadXMLFile(xmlFileURL, function(xmlString) {
     const materiasAluno = extractMateriasAluno(xmlString, matriculaAluno);
     console.log("Matérias do aluno:", materiasAluno);
+
+    pintarGradeAluno(xmlString, matriculaAluno);
   });
 });
 

@@ -302,13 +302,13 @@ cells.forEach((cell) => {
 // Adiciona o evento de clique com o botão direito para cada célula
 cells.forEach((cell) => {
   cell.addEventListener("contextmenu", function(event) {
-    event.preventDefault(); // Impede o menu de contexto padrão de ser exibido
+    event.preventDefault();
     const id = this.id;
     showHistoricoModal(id);
   });
 });
 
-// Obtém o elemento do "X" para adicionar o evento de clique
+// Obtém o "X" para adicionar o evento de clique
 const closeModalButton = document.getElementById("closeModal");
 
 // Adiciona o evento de clique para fechar o modal
